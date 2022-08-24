@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Box } from "@mui/material";
 import { useMetaMask } from "ethers-react";
 import {networks} from '../../utils/networks'
@@ -9,7 +9,7 @@ const rightLink = {
   ml: 3,
 };
 export const HandleWallet = () => {
-  const {isConnected,connectedAccount,connectWallet} = useMetaMask()
+  const {isConnected,connectWallet} = useMetaMask()
   const [network,setNetwork]=useState();
   const {ethereum}=window
   useEffect(()=>{
@@ -25,6 +25,7 @@ export const HandleWallet = () => {
     })();
 }
 },[ethereum])
+console.log(isConnected)
   return (
     <Box sx={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
       {!isConnected? (
