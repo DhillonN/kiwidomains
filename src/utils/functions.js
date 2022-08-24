@@ -33,6 +33,7 @@ export const connectWallet = async () => {
         }
         const accounts = await ethereum.request({ method: "eth_requestAccounts" });
         console.log("Connected", accounts[0]);
+        window.location.reload();
     } catch (error) {
         console.log(error);
     }
