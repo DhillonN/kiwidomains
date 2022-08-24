@@ -9,7 +9,7 @@ const rightLink = {
   ml: 3,
 };
 export const HandleWallet = () => {
-  const {isConnected,setIsConnectWallet} = useState(false)
+  const [isConnected,setIsConnectWallet] = useState(false)
   const [network,setNetwork]=useState();
   const {ethereum}=window
   useEffect(()=>{
