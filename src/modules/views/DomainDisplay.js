@@ -108,6 +108,8 @@ const handleClose=()=>{
   };
   return (
     <Container component="section" sx={{ mt: 8, mb: 4 }} id="mydomains">
+      {mints&&mints.length>0?
+      <div>
       <Typography variant="h4" marked="center" align="center" component="h2">
         Your Domains on blockchain
       </Typography>
@@ -148,6 +150,8 @@ const handleClose=()=>{
           </ImageIconButton>
         ))}
       </Box>
+      </div>
+      :<Typography variant={"h2"}>You don't have any domains</Typography>}
       <Snackbar
           open={open}
           closeFunc={handleClose}
