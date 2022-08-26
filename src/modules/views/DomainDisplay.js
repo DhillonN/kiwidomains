@@ -56,26 +56,22 @@ const ImageIconButton = styled(ButtonBase)(({ theme }) => ({
 }));
 
 export default function DomainDisplay() {
-  const [mints, setMints] = useState([]);
   const { data, isLoading } = useContractRead({
     addressOrName: CONTRACT_ADDRESS,
     contractInterface: contractAbi.abi,
     functionName: 'getAllNames',
   })
-
-useEffect(()=>{
-  setMints(data)
-},[isLoading])
+  console.log(data)
 
   return (
     <Container component="section" sx={{ mt: 8, mb: 4 }} id="mydomains">
-      {mints&&mints.length>0?
+      {data&&data.length>0?
       <div>
       <Typography variant="h4" marked="center" align="center" component="h2">
         Your Domains on blockchain
       </Typography>
       <Box sx={{ mt: 8, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
-        {mints.map((mint,index) => (
+        {data.map((mint,index) => (
           <ImageIconButton
             key={index}
             style={{
@@ -104,7 +100,7 @@ useEffect(()=>{
                 color="inherit"
                 className="imageTitle"
               >
-                {mint.name}
+                {mint}
                 <div className="imageMarked" />
               </Typography>
             </Box>
