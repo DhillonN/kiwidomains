@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Button from '../components/Button';
 import Typography from '../components/Typography';
 import DomainHeroLayout from './DomainHeroLayout';
 import backgroundImage from '../../assets/Polygon-blockchain.jpg'

@@ -4,9 +4,8 @@ import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Container from '@mui/material/Container';
 import Typography from '../components/Typography';
-import {ethers} from 'ethers'
 import contractAbi from '../../utils/Domains.json'
-import Snackbar  from '../components/Snackbar';
+import {useContractRead} from 'wagmi'
 const CONTRACT_ADDRESS = "0x9Fa7499C62FCCf753349112e8cb17AB00a29e01d";
 const ImageBackdrop = styled('div')(({ theme }) => ({
   position: 'absolute',
@@ -58,54 +57,16 @@ const ImageIconButton = styled(ButtonBase)(({ theme }) => ({
 
 export default function DomainDisplay() {
   const [mints, setMints] = useState([]);
-  const [message,setMessage]= useState("");
-  const [open,setOpen] = useState(false)
+  const { data, isLoading } = useContractRead({
+    addressOrName: CONTRACT_ADDRESS,
+    contractInterface: contractAbi.abi,
+    functionName: 'getAllNames',
+  })
 
 useEffect(()=>{
-  requestDispatcher();
-},[])
+  setMints(data)
+},[isLoading])
 
-const requestDispatcher=async()=>{
-  const msg= await fetchMints();
-  setMessage(msg);
-  setOpen(true)
-}
-const handleClose=()=>{
-  setOpen(false)
-}
-  const fetchMints = async () => {
-    try {
-        const { ethereum } = window;
-        if (ethereum) {
-            // You know all this
-            const provider = new ethers.providers.Web3Provider(ethereum);
-            const signer = provider.getSigner();
-            const contract = new ethers.Contract(CONTRACT_ADDRESS, contractAbi.abi, signer);
-  
-            // Get all the domain names from our contract
-            const names = await contract.getAllNames();
-  
-            // For each name, get the record and the address
-            const mintRecords = await Promise.all(
-                names.map(async (name) => {
-                    const mintRecord = await contract.records(name);
-                    const owner = await contract.domains(name);
-                    return {
-                        id: names.indexOf(name),
-                        name: name,
-                        record: mintRecord,
-                        owner: owner,
-                    };
-                })
-            );
-            setMints(mintRecords);
-            return("You own "+mintRecords.length+" domains on blockchain");
-            
-        }
-    } catch (error) {
-        return(error.message);
-    }
-  };
   return (
     <Container component="section" sx={{ mt: 8, mb: 4 }} id="mydomains">
       {mints&&mints.length>0?
@@ -152,11 +113,6 @@ const handleClose=()=>{
       </Box>
       </div>
       :<Typography variant={"h2"}>You don't have any domains</Typography>}
-      <Snackbar
-          open={open}
-          closeFunc={handleClose}
-          message={message}
-        />
     </Container>
   );
 }
