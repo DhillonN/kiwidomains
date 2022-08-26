@@ -15,7 +15,7 @@ const { chains, provider, webSocketProvider } = configureChains(defaultChains, [
   alchemyProvider({ apiKey: alchemyId }),
   publicProvider(),
 ])
-console.log(alchemyId)
+
 const client = createClient({
   autoConnect: true,
   connectors: [
